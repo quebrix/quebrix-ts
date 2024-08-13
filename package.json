@@ -1,0 +1,21 @@
+{
+  "name": "russel-ts",
+  "version": "1.0.0",
+  "description": "russel client with type script",
+  "main": "src/RusselClient",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "saman fattahi",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.2.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
