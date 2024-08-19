@@ -6,11 +6,6 @@ import {IApiResponseData} from "./models/IApiResponse";
 import {ServiceResult} from "./utilities/ServiceResult";
 
 async function setKey(baseUrl: string, payload: IRusselSetPayload): Promise<IApiResponseData> {
-    /// expected payload {
-    // cluster
-    // key
-    // value
-    // }
     try {
         const url = `${baseUrl}/set`;
         const response = await customFetch(url, {

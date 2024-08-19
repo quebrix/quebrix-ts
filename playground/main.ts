@@ -3,7 +3,7 @@ import RusselClient from "../src/russelClient";
 async function main() {
     const testClient = new RusselClient();
     testClient.setRusselConfig({
-        baseUrl: 'http://127.0.0.1:6022'
+        port:6022
     })
     try {
         await testClient.set({
@@ -12,7 +12,7 @@ async function main() {
             value:'soleymani'
         })
         const res =await testClient.getAllClusters()
-        console.log(res.data)
+        console.log(res)
     } catch (error: any) {
         console.error("Error:", error.message);
     }
