@@ -1,33 +1,43 @@
-# Russel Client In TypeScript
+# 🚀 Russel Client in TypeScript
 
-This package is written in TypeScript in order to integrate with russel
-## Setup
+Welcome to the **Russel Client** package! This library, crafted in TypeScript, enables seamless integration with the Russel service.
 
-Make sure to install the dependencies:
+## ⚙️ Setup
+
+Get started by installing the package:
 
 ```bash
 # npm
 npm install russel-ts
-
 ```
-This package has zero dependencies so you should be fine with just installing the russel-ts
 
-## Types
+# 🛠️ Types & Interfaces
 
-There are three different interfaces to use with russel-ts and they are all included in the package
+russel-ts comes with three essential interfaces that you can leverage to configure and interact with Russel:
+
+`IRusselConfig`
+
+Defines the configuration settings for the Russel client.
 
 ```typescript
 interface IRusselConfig {
-    baseUrl?: string // default is set to http://127.0.0.1
-    port?: number // default is set to 6022
+    baseUrl?: string // default: 'http://127.0.0.1'
+    port?: number // default: 6022
 }
 
-// example usage
-const RusselClient = new RusselClient()
-RusselClient.setRusselConfig({
+// Example usage:
+const russelClient = new RusselClient();
+russelClient.setRusselConfig({
     // your configuration goes here...
-})
+});
+```
 
+`IRusselPayload`
+
+Specifies the structure for setting data within a cluster.
+
+
+```typescript
 interface IRusselPayload {
     cluster: string // cluster name
     key: string // key name
@@ -35,141 +45,191 @@ interface IRusselPayload {
     ttl?: number // expiration time in seconds
 }
 
-// example usage
-await RusselClient.set({
+// Example usage:
+await russelClient.set({
     cluster: 'foo',
     key: 'bar',
     value: 'fooBar',
     ttl: 1000
-})
+});
+```
 
+
+`IRusselPartials`
+
+Defines the structure for retrieving data from a cluster.
+
+
+```typescript
 interface IRusselPartials {
     cluster: string // cluster name
     key: string // key name
 }
 
-// example usage
-await RusselClient.get({
+// Example usage:
+await russelClient.get({
     cluster: 'foo',
     key: 'bar',
-})
+});
+```
+
+# 📬 Handling Responses
+Russel-ts offers two ways to handle responses from your client operations:
+
+1. Raw value
+
+Retrieve the raw value directly:
+
+```typescript
+const res = await russelClient.get({
+    cluster: 'foo',
+    key: 'bar',
+});
+console.log(res); // raw value
+
+```
+
+2. Decoded Value
+
+
+
+Alternatively, decode the value using the built-in function:
+
+```typescript
+const res = await russelClient.get({
+    cluster: 'foo',
+    key: 'bar',
+});
+console.log(res.decodeData()); // decoded value
+
+
 ```
 
 
-## Response
+# 🔄 Internal Functions
+`russel-ts` provides a straightforward API for CRUD operations. Here's a step-by-step guide on using its functionalities:
 
-There are two ways to receive your response.
-you can either get the raw value like below
 
-```typescript
-const res = await RusselClient.get({
-    cluster: 'foo',
-    key: 'bar',
-})
-console.log(res) // raw value
-```
-Or using a built in function that decodes the value
+## Set a Value in a Cluster
 
 ```typescript
-const res = await RusselClient.get({
-    cluster: 'foo',
-    key: 'bar',
-})
-console.log(res.decodeData()) // decoded value
-```
-## Internal Functions
-russel-ts has a pretty easy to use API with functions that can operate as a CRUD.
-here is an step by step guide after configuring russel-ts in order to use it's APIs.
-
-```typescript
-const RusselClient = new RusselClient()
-
-// Set a value and cluster
 try {
-    const res = await RusselClient.set({
+    const res = await russelClient.set({
         cluster: 'foo',
         key: 'bar',
         value: 'fooBar',
-    })
-    console.log('value set successfully')
+    });
+    console.log('Value set successfully');
 } catch (error) {
-    console.log(error)
-}
-
-// Get a value with it's key and cluster
-try {
-    const res = await RusselClient.getCluster({
-        cluster: 'foo',
-        key: 'bar',
-    })
-    console.log(res.decodeData()) // fooBar
-} catch (error) {
-    console.log(error)
-}
-
-// Delete a cluster's value
-try {
-    const res = await RusselClient.deleteCluster({
-        cluster: 'foo',
-        key: 'bar',
-    })
-    console.log(res) // value deleted
-} catch (error) {
-    console.log(error)
-}
-
-// Clearing a cluster
-try {
-    const res = await RusselClient.clearCluster('foo') // cluster name
-    console.log(res) // cluster cleared
-} catch (error) {
-    console.log(error)
-}
-
-// Listing all keys of a cluster
-try {
-    const res = await RusselClient.getKeysOfCluster('foo') // cluster name
-    console.log(res) // ['foo']
-} catch (error) {
-    console.log(error)
-}
-
-
-// Set a new cluster without any key value pairs
-try {
-    const res = await RusselClient.setCluster('foo') // cluster name
-    console.log(res) // ['foo']
-} catch (error) {
-    console.log(error)
-}
-
-// Cheking the connection of russel-ts
-try {
-    const res = await RusselClient.checkConnection() // cluster name
-    console.log(res) 
-} catch (error) {
-    console.log(error)
+    console.error(error);
 }
 ```
-## Key points
-All responses are returned in shape of a service result like this
+## Get a Value from a Cluster
 
 ```typescript
-return {
+try {
+    const res = await russelClient.getCluster({
+        cluster: 'foo',
+        key: 'bar',
+    });
+    console.log(res.decodeData()); // 'fooBar'
+} catch (error) {
+    console.error(error);
+}
+
+```
+## Delete a Value from a Cluster
+
+
+```typescript
+try {
+    const res = await russelClient.deleteCluster({
+        cluster: 'foo',
+        key: 'bar',
+    });
+    console.log('Value deleted');
+} catch (error) {
+    console.error(error);
+}
+
+
+```
+## Clear a Cluster
+
+```typescript
+try {
+    const res = await russelClient.clearCluster('foo'); // cluster name
+    console.log('Cluster cleared');
+} catch (error) {
+    console.error(error);
+}
+
+
+```
+## List All Keys in a Cluster
+
+
+```typescript
+try {
+    const res = await russelClient.getKeysOfCluster('foo'); // cluster name
+    console.log(res); // ['bar']
+} catch (error) {
+    console.error(error);
+}
+
+```
+
+## Create a New Cluster
+
+
+
+```typescript
+try {
+    const res = await russelClient.setCluster('foo'); // cluster name
+    console.log('Cluster created');
+} catch (error) {
+    console.error(error);
+}
+
+
+```
+
+## Check Russel-ts Connection
+
+```typescript
+try {
+    const res = await russelClient.checkConnection();
+    console.log('Connection successful');
+} catch (error) {
+    console.error(error);
+}
+
+
+```
+
+# 🔑 Key Points
+
+All responses are returned in the following format:
+
+```typescript
+{
     is_success: boolean, // operation status
     data: this.data, // data itself
     message: this.message // message
 }
-```
-In Case of any errors happening, it will be thrown with is_success set to false.
 
+```
+In case of errors, the response will include is_success set to false:
 
 ```typescript
-return {
+{
     is_success: false, // operation status
     message: this.message // error message
 }
+
 ```
 
+For more details, visit our [GitHub organization](https://github.com/russel-io/). Happy coding! 🎉
 
-Check out the [github organization](https://github.com/russel-io) for more information.
+
+
