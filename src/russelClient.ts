@@ -9,7 +9,8 @@ import {
     setKey,
 } from "./endPoints";
 import type {IApiResponseData} from "./models/IApiResponse";
-import  type{IRusselPartials, IRusselSetPayload} from "./models/IRusselPayload";
+import type {IRusselPartials, IRusselSetPayload} from "./models/IRusselPayload";
+import {IRusselConfig} from "./models/IRusselConfig";
 
 // Define the structure of the API response
 
@@ -40,11 +41,11 @@ class RusselClient {
     private baseUrl: string;
 
     constructor() {
-        this.baseUrl = "http://127.0.0.1:6006/api";
+        this.baseUrl = "http://127.0.0.1:6022/api";
     }
 
-    async setRusselConfig(russelConfig: { baseUrl: string }): Promise<void> {
-        this.baseUrl = `${russelConfig.baseUrl}/api`;
+    async setRusselConfig(russelConfig: IRusselConfig): Promise<void> {
+        this.baseUrl = `${russelConfig.baseUrl ? russelConfig.baseUrl : 'http://127.0.0.1'}:${russelConfig.port ? russelConfig.port : '6022'}/api`;
     }
 
     private async _handleResponse(response: IApiResponseData): Promise<ApiResponse> {
