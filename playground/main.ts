@@ -1,17 +1,11 @@
 import RusselClient from "../src/russelClient";
 
 async function main() {
-    const testClient = new RusselClient();
-    testClient.setRusselConfig({
-        port:6022
-    })
+    const testClient = new RusselClient('admin', '123456');
+    testClient.authorize()
     try {
-        await testClient.set({
-            cluster:'thispc',
-            key:'amirhosein',
-            value:'soleymani'
-        })
-        const res =await testClient.getAllClusters()
+        await testClient.getAllClusters()
+        const res = await testClient.getAllClusters()
         console.log(res)
     } catch (error: any) {
         console.error("Error:", error.message);

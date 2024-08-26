@@ -39,13 +39,37 @@ class ApiResponse {
 
 class RusselClient {
     private baseUrl: string;
+    private password: string;
+    private username: string;
+    private authHeaderValue: string;
 
-    constructor() {
+    constructor(username: string, password: string) {
         this.baseUrl = "http://127.0.0.1:6022/api";
+        this.username = username
+        this.password = password
     }
 
     async setRusselConfig(russelConfig: IRusselConfig): Promise<void> {
         this.baseUrl = `${russelConfig.baseUrl ? russelConfig.baseUrl : 'http://127.0.0.1'}:${russelConfig.port ? russelConfig.port : '6022'}/api`;
+        if (russelConfig.password) {
+            this.password = russelConfig.password
+        }
+        if (russelConfig.username) {
+            this.username = russelConfig.username
+        }
+    }
+
+    async authorize() {
+        this.setGlobalAuthHeader()
+    }
+
+    async setGlobalAuthHeader() {
+        const encoder = new TextEncoder()
+        const authHeaderByte = encoder.encode(this.username.concat(':', this.password))
+        authHeaderByte.forEach((byte: number) => {
+            this.authHeaderValue += btoa(byte.toString())
+        })
+        console.log(this.authHeaderValue)
     }
 
     private async _handleResponse(response: IApiResponseData): Promise<ApiResponse> {

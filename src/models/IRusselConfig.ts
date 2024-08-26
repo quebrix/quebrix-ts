@@ -1,4 +1,7 @@
 export interface IRusselConfig {
     baseUrl?: string,
-    port?: number
+    port?: number,
+    username?:string,
+    password?:string
+
 }
