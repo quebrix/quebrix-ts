@@ -8,6 +8,7 @@ import {
     setCluster,
     setKey,
 } from "./endPoints";
+import {setToken} from "./utilities/customFetch";
 import type {IApiResponseData} from "./models/IApiResponse";
 import type {IRusselPartials, IRusselSetPayload} from "./models/IRusselPayload";
 import {IRusselConfig} from "./models/IRusselConfig";
@@ -41,6 +42,7 @@ class RusselClient {
     private baseUrl: string;
     private password: string;
     private username: string;
+    // @ts-ignore
     private authHeaderValue: string;
 
     constructor(username: string, password: string) {
@@ -60,16 +62,15 @@ class RusselClient {
     }
 
     async authorize() {
-        this.setGlobalAuthHeader()
+        await this.setGlobalAuthHeader()
+        setToken(this.authHeaderValue)
+
     }
 
     async setGlobalAuthHeader() {
         const encoder = new TextEncoder()
-        const authHeaderByte = encoder.encode(this.username.concat(':', this.password))
-        authHeaderByte.forEach((byte: number) => {
-            this.authHeaderValue += btoa(byte.toString())
-        })
-        console.log(this.authHeaderValue)
+        const authHeaderByte: any = encoder.encode(this.username.concat(':', this.password))
+        this.authHeaderValue = btoa(String.fromCharCode.apply(null, authHeaderByte))
     }
 
     private async _handleResponse(response: IApiResponseData): Promise<ApiResponse> {
