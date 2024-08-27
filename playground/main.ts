@@ -2,6 +2,9 @@ import RusselClient from "../src/russelClient";
 
 async function main() {
     const testClient = new RusselClient('admin', '123456');
+    testClient.setRusselConfig({
+
+    })
     await testClient.authorize()
     try {
         await testClient.set({
