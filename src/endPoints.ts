@@ -124,7 +124,6 @@ async function getAllClusters(baseUrl: string) {
         const url = `${baseUrl}/get_clusters`;
         const response = await customFetch(url, {
             method: 'GET',
-
         });
         return new ServiceResult('operation successful', await response.json()).ok()
 

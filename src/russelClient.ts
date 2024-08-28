@@ -8,6 +8,7 @@ import {
     setCluster,
     setKey,
 } from "./endPoints";
+import {setToken} from "./utilities/customFetch";
 import type {IApiResponseData} from "./models/IApiResponse";
 import type {IRusselPartials, IRusselSetPayload} from "./models/IRusselPayload";
 import {IRusselConfig} from "./models/IRusselConfig";
@@ -39,13 +40,37 @@ class ApiResponse {
 
 class RusselClient {
     private baseUrl: string;
+    private password: string;
+    private username: string;
+    // @ts-ignore
+    private authHeaderValue: string;
 
-    constructor() {
+    constructor(username: string, password: string) {
         this.baseUrl = "http://127.0.0.1:6022/api";
+        this.username = username
+        this.password = password
     }
 
     async setRusselConfig(russelConfig: IRusselConfig): Promise<void> {
         this.baseUrl = `${russelConfig.baseUrl ? russelConfig.baseUrl : 'http://127.0.0.1'}:${russelConfig.port ? russelConfig.port : '6022'}/api`;
+        if (russelConfig.password) {
+            this.password = russelConfig.password
+        }
+        if (russelConfig.username) {
+            this.username = russelConfig.username
+        }
+    }
+
+    async authorize() {
+        await this.setGlobalAuthHeader()
+        setToken(this.authHeaderValue)
+
+    }
+
+    async setGlobalAuthHeader() {
+        const encoder = new TextEncoder()
+        const authHeaderByte: any = encoder.encode(this.username.concat(':', this.password))
+        this.authHeaderValue = btoa(String.fromCharCode.apply(null, authHeaderByte))
     }
 
     private async _handleResponse(response: IApiResponseData): Promise<ApiResponse> {
