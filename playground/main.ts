@@ -1,11 +1,8 @@
-import RusselClient from "../src/russelClient";
+import QuebrixClient from "../src/QuebrixClient";
 
 async function main() {
-    const testClient = new RusselClient('admin', '123456');
-    testClient.setRusselConfig({
+    const testClient = new QuebrixClient('admin', '123456');
 
-    })
-    await testClient.authorize()
     try {
         await testClient.set({
             cluster:'test',
