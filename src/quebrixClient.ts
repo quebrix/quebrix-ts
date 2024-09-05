@@ -10,8 +10,8 @@ import {
 } from "./endPoints";
 import {setToken} from "./utilities/customFetch";
 import type {IApiResponseData} from "./models/IApiResponse";
-import type {IRusselPartials, IRusselSetPayload} from "./models/IRusselPayload";
-import {IRusselConfig} from "./models/IRusselConfig";
+import type {IQuebrixPartials, IQuebrixSetPayload} from "./models/IQuebrixPayload";
+import {IQuebrixConfig} from "./models/IQuebrixConfig";
 
 // Define the structure of the API response
 
@@ -38,7 +38,7 @@ class ApiResponse {
 }
 
 
-class RusselClient {
+class QuebrixClient {
     private baseUrl: string;
     private password: string;
     private username: string;
@@ -49,22 +49,23 @@ class RusselClient {
         this.baseUrl = "http://127.0.0.1:6022/api";
         this.username = username
         this.password = password
+        this.authorize()
+
     }
 
-    async setRusselConfig(russelConfig: IRusselConfig): Promise<void> {
-        this.baseUrl = `${russelConfig.baseUrl ? russelConfig.baseUrl : 'http://127.0.0.1'}:${russelConfig.port ? russelConfig.port : '6022'}/api`;
-        if (russelConfig.password) {
-            this.password = russelConfig.password
+    async setQuebrixConfig(QuebrixConfig: IQuebrixConfig): Promise<void> {
+        this.baseUrl = `${QuebrixConfig.baseUrl ? QuebrixConfig.baseUrl : 'http://127.0.0.1'}:${QuebrixConfig.port ? QuebrixConfig.port : '6022'}/api`;
+        if (QuebrixConfig.password) {
+            this.password = QuebrixConfig.password
         }
-        if (russelConfig.username) {
-            this.username = russelConfig.username
+        if (QuebrixConfig.username) {
+            this.username = QuebrixConfig.username
         }
     }
 
     async authorize() {
         await this.setGlobalAuthHeader()
         setToken(this.authHeaderValue)
-
     }
 
     async setGlobalAuthHeader() {
@@ -80,17 +81,17 @@ class RusselClient {
         return ApiResponse.fromDict(response.data);
     }
 
-    async set(payload: IRusselSetPayload): Promise<ApiResponse> {
+    async set(payload: IQuebrixSetPayload): Promise<ApiResponse> {
         const response = await setKey(this.baseUrl, payload);
         return await this._handleResponse(response);
     }
 
-    async get(partials: IRusselPartials): Promise<ApiResponse> {
+    async get(partials: IQuebrixPartials): Promise<ApiResponse> {
         const response = await getCluster(this.baseUrl, partials);
         return await this._handleResponse(response);
     }
 
-    async delete(partials: IRusselPartials): Promise<ApiResponse> {
+    async delete(partials: IQuebrixPartials): Promise<ApiResponse> {
         const response = await deleteCluster(this.baseUrl, partials);
         return await this._handleResponse(response);
     }
@@ -121,4 +122,4 @@ class RusselClient {
     }
 }
 
-export default RusselClient;
+export default QuebrixClient;

@@ -1,8 +1,8 @@
 {
-  "name": "russel-ts",
+  "name": "Quebrix-ts",
   "version": "1.0.0",
-  "description": "russel client with type script",
-  "main": "src/RusselClient",
+  "description": "Quebrix client with type script",
+  "main": "src/QuebrixClient",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

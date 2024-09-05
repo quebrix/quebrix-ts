@@ -1,11 +1,11 @@
 import {errorHandler} from "./utilities/globalErrorHandler";
 import {customFetch} from "./utilities/customFetch";
 import {partialItemEncoder} from "./utilities/UrlCreator";
-import {IRusselPartials, IRusselSetPayload} from "./models/IRusselPayload";
+import {IQuebrixPartials, IQuebrixSetPayload} from "./models/IQuebrixPayload";
 import {IApiResponseData} from "./models/IApiResponse";
 import {ServiceResult} from "./utilities/ServiceResult";
 
-async function setKey(baseUrl: string, payload: IRusselSetPayload): Promise<IApiResponseData> {
+async function setKey(baseUrl: string, payload: IQuebrixSetPayload): Promise<IApiResponseData> {
     try {
         const url = `${baseUrl}/set`;
         const response = await customFetch(url, {
@@ -20,7 +20,7 @@ async function setKey(baseUrl: string, payload: IRusselSetPayload): Promise<IApi
     }
 }
 
-async function getCluster(baseUrl: string, partials: IRusselPartials) {
+async function getCluster(baseUrl: string, partials: IQuebrixPartials) {
     /// expected payload {
     // cluster
     // key
@@ -38,7 +38,7 @@ async function getCluster(baseUrl: string, partials: IRusselPartials) {
     }
 }
 
-async function deleteCluster(baseUrl: string, partials: IRusselPartials) {
+async function deleteCluster(baseUrl: string, partials: IQuebrixPartials) {
     /// expected payload {
     // cluster
     // key

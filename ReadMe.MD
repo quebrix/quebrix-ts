@@ -1,6 +1,6 @@
-# 🚀 Russel Client in TypeScript
+# 🚀 Quebrix Client in TypeScript
 
-Welcome to the **Russel Client** package! This library, crafted in TypeScript, enables seamless integration with the Russel service.
+Welcome to the **Quebrix Client** package! This library, crafted in TypeScript, enables seamless integration with the Quebrix service.
 
 ## ⚙️ Setup
 
@@ -8,13 +8,13 @@ Get started by installing the package:
 
 ```bash
 # npm
-npm install russel-ts
+npm install Quebrix-ts
 ```
-Russel uses Authorization in order to set clusters. so you need to authorize yourself first.
+Quebrix uses Authorization in order to set clusters. so you need to authorize yourself first.
 
 ## 🔒 Authorization
 
-After installing the russel application. russel by default creates a user with this credentials
+After installing the Quebrix application. Quebrix by default creates a user with this credentials
 
 ```bash
  admin // username
@@ -22,14 +22,6 @@ After installing the russel application. russel by default creates a user with t
 ```
 This is the default user with the highest priority that can add and remove profiles.
 
-Now, before using the `russel-ts` API you need to call `authorize` function when a new client is created.
-
-```typescript
-
-// Example usage:
-const russelClient = new RusselClient();
-russelClient.authorize();
-```
 
 If you need to authorize as another user, there are two different ways to do so.
 
@@ -38,33 +30,33 @@ If you need to authorize as another user, there are two different ways to do so.
 ```typescript
 
 // Example usage:
-const russelClient = new RusselClient('admin','123456'); // first arg is username and second is password
-russelClient.authorize();
+const QuebrixClient = new QuebrixClient('admin','123456'); // first arg is username and second is password
+
 ```
 
-## 2. Set user in russelConfig
+## 2. Set user in QuebrixConfig
 
 ```typescript
 
 // Example usage:
-const russelClient = new RusselClient(); // first arg is username and second is password
-russelClient.setRusselConfig({
+const QuebrixClient = new QuebrixClient(); // first arg is username and second is password
+QuebrixClient.setQuebrixConfig({
     username:'admin',
     password:123456
 })
-russelClient.authorize();
+
 ```
 
 # 🛠️ Types & Interfaces
 
-russel-ts comes with three essential interfaces that you can leverage to configure and interact with Russel:
+Quebrix-ts comes with three essential interfaces that you can leverage to configure and interact with Quebrix:
 
-`IRusselConfig`
+`IQuebrixConfig`
 
-Defines the configuration settings for the Russel client.
+Defines the configuration settings for the Quebrix client.
 
 ```typescript
-interface IRusselConfig {
+interface IQuebrixConfig {
     baseUrl?: string // default: 'http://127.0.0.1'
     port?: number // default: 6022
     username?:string,
@@ -72,19 +64,19 @@ interface IRusselConfig {
 }
 
 // Example usage:
-const russelClient = new RusselClient();
-russelClient.setRusselConfig({
+const QuebrixClient = new QuebrixClient();
+QuebrixClient.setQuebrixConfig({
     // your configuration goes here...
 });
 ```
 
-`IRusselPayload`
+`IQuebrixPayload`
 
 Specifies the structure for setting data within a cluster.
 
 
 ```typescript
-interface IRusselPayload {
+interface IQuebrixPayload {
     cluster: string // cluster name
     key: string // key name
     value: string // value name
@@ -92,7 +84,7 @@ interface IRusselPayload {
 }
 
 // Example usage:
-await russelClient.set({
+await QuebrixClient.set({
     cluster: 'foo',
     key: 'bar',
     value: 'fooBar',
@@ -101,33 +93,33 @@ await russelClient.set({
 ```
 
 
-`IRusselPartials`
+`IQuebrixPartials`
 
 Defines the structure for retrieving data from a cluster.
 
 
 ```typescript
-interface IRusselPartials {
+interface IQuebrixPartials {
     cluster: string // cluster name
     key: string // key name
 }
 
 // Example usage:
-await russelClient.get({
+await QuebrixClient.get({
     cluster: 'foo',
     key: 'bar',
 });
 ```
 
 # 📬 Handling Responses
-Russel-ts offers two ways to handle responses from your client operations:
+Quebrix-ts offers two ways to handle responses from your client operations:
 
 1. Raw value
 
 Retrieve the raw value directly:
 
 ```typescript
-const res = await russelClient.get({
+const res = await QuebrixClient.get({
     cluster: 'foo',
     key: 'bar',
 });
@@ -142,7 +134,7 @@ console.log(res); // raw value
 Alternatively, decode the value using the built-in function:
 
 ```typescript
-const res = await russelClient.get({
+const res = await QuebrixClient.get({
     cluster: 'foo',
     key: 'bar',
 });
@@ -153,14 +145,14 @@ console.log(res.decodeData()); // decoded value
 
 
 # 🔄 Internal Functions
-`russel-ts` provides a straightforward API for CRUD operations. Here's a step-by-step guide on using its functionalities:
+`Quebrix-ts` provides a straightforward API for CRUD operations. Here's a step-by-step guide on using its functionalities:
 
 
 ## Set a Value in a Cluster
 
 ```typescript
 try {
-    const res = await russelClient.set({
+    const res = await QuebrixClient.set({
         cluster: 'foo',
         key: 'bar',
         value: 'fooBar',
@@ -174,7 +166,7 @@ try {
 
 ```typescript
 try {
-    const res = await russelClient.getCluster({
+    const res = await QuebrixClient.getCluster({
         cluster: 'foo',
         key: 'bar',
     });
@@ -189,7 +181,7 @@ try {
 
 ```typescript
 try {
-    const res = await russelClient.deleteCluster({
+    const res = await QuebrixClient.deleteCluster({
         cluster: 'foo',
         key: 'bar',
     });
@@ -204,7 +196,7 @@ try {
 
 ```typescript
 try {
-    const res = await russelClient.clearCluster('foo'); // cluster name
+    const res = await QuebrixClient.clearCluster('foo'); // cluster name
     console.log('Cluster cleared');
 } catch (error) {
     console.error(error);
@@ -217,7 +209,7 @@ try {
 
 ```typescript
 try {
-    const res = await russelClient.getKeysOfCluster('foo'); // cluster name
+    const res = await QuebrixClient.getKeysOfCluster('foo'); // cluster name
     console.log(res); // ['bar']
 } catch (error) {
     console.error(error);
@@ -231,7 +223,7 @@ try {
 
 ```typescript
 try {
-    const res = await russelClient.setCluster('foo'); // cluster name
+    const res = await QuebrixClient.setCluster('foo'); // cluster name
     console.log('Cluster created');
 } catch (error) {
     console.error(error);
@@ -240,11 +232,11 @@ try {
 
 ```
 
-## Check Russel-ts Connection
+## Check Quebrix-ts Connection
 
 ```typescript
 try {
-    const res = await russelClient.checkConnection();
+    const res = await QuebrixClient.checkConnection();
     console.log('Connection successful');
 } catch (error) {
     console.error(error);
@@ -275,7 +267,7 @@ In case of errors, the response will include is_success set to false:
 
 ```
 
-For more details, visit our [GitHub organization](https://github.com/russel-io/). Happy coding! 🎉
+For more details, visit our [GitHub organization](https://github.com/Quebrix-io/). Happy coding! 🎉
 
 
 
